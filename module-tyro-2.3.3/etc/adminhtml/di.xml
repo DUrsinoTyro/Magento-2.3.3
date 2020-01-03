@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2016-2019 Mastercard
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="HpfApiVersionInfoModel" type="OnTap\MasterCard\Block\Adminhtml\Api\Version">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">OnTap\MasterCard\Model\Ui\Hpf\ConfigProvider::METHOD_CODE</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="HostedApiVersionInfoModel" type="OnTap\MasterCard\Block\Adminhtml\Api\Version">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">OnTap\MasterCard\Model\Ui\Hosted\ConfigProvider::METHOD_CODE</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="DirectApiVersionInfoModel" type="OnTap\MasterCard\Block\Adminhtml\Api\Version">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">OnTap\MasterCard\Model\Ui\Direct\ConfigProvider::METHOD_CODE</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="TnsDirectInfoBlock" type="OnTap\MasterCard\Block\Direct\Info">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">0</item>
+            </argument>
+            <argument name="config" xsi:type="object">TnsDirectConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="TnsHostedInfoBlock" type="OnTap\MasterCard\Block\Direct\Info">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">0</item>
+            </argument>
+            <argument name="config" xsi:type="object">TnsHostedConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="TnsHpfInfoBlock" type="OnTap\MasterCard\Block\Direct\Info">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">0</item>
+            </argument>
+            <argument name="config" xsi:type="object">TnsHpfConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="TnsDirectAuthorizeDataBuilder" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="operation" xsi:type="string">AuthorizeOperationDataBuilder</item>
+                <item name="card" xsi:type="string">OnTap\MasterCard\Gateway\Request\Direct\CardDataBuilder</item>
+                <item name="order" xsi:type="string">OnTap\MasterCard\Gateway\Request\OrderDataBuilder</item>
+                <item name="billing" xsi:type="string">OnTap\MasterCard\Gateway\Request\BillingDataBuilder</item>
+                <item name="shipping" xsi:type="string">OnTap\MasterCard\Gateway\Request\ShippingDataBuilder</item>
+                <item name="customer" xsi:type="string">OnTap\MasterCard\Gateway\Request\CustomerDataBuilder</item>
+                <item name="source" xsi:type="string">OnTap\MasterCard\Gateway\Request\SourceDataBuilder</item>
+                <item name="version" xsi:type="string">OnTap\MasterCard\Gateway\Request\VersionDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Vault\Model\Ui\Adminhtml\TokensConfigProvider">
+        <arguments>
+            <argument name="tokenUiComponentProviders" xsi:type="array">
+                <item name="tns_direct" xsi:type="object">OnTap\MasterCard\Model\Ui\Adminhtml\TokenUiComponentProvider</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
